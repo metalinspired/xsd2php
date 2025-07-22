@@ -134,7 +134,7 @@ class PhpConverter extends AbstractConverter
      */
     private function visitSequence(PHPClass $class, Schema $schema, Sequence $sequence): void
     {
-        foreach ($this->filterElements($sequence) as $childSequence) {
+        foreach ($sequence->getElements() as $childSequence) {
             if ($childSequence instanceof Group) {
                 $this->visitGroup($class, $schema, $childSequence);
             } elseif ($childSequence instanceof Choice) {
@@ -146,17 +146,12 @@ class PhpConverter extends AbstractConverter
         }
     }
 
-    private function filterElements(ElementContainer $container): array
-    {
-        return array_filter($container->getElements(), fn ($e) => !$e instanceof Any);
-    }
-
     /**
      * Process xsd:complexType xsd:choice xsd:element
      */
     private function visitChoice(PHPClass $class, Schema $schema, Choice $choice, ?GroupRef $groupRef = null): void
     {
-        foreach ($this->filterElements($choice) as $choiceOption) {
+        foreach ($choice->getElements() as $choiceOption) {
             if ($choiceOption instanceof Sequence) {
                 $this->visitSequence($class, $schema, $choiceOption);
             } elseif ($choiceOption instanceof Choice) {
@@ -177,7 +172,7 @@ class PhpConverter extends AbstractConverter
 
     private function visitGroup(PHPClass $class, Schema $schema, Group $group): void
     {
-        foreach ($this->filterElements($group) as $childGroup) {
+        foreach ($group->getElements() as $childGroup) {
             if ($childGroup instanceof Group) {
                 $this->visitGroup($class, $schema, $childGroup);
             } elseif ($childGroup instanceof Choice) {
@@ -352,7 +347,7 @@ class PhpConverter extends AbstractConverter
     private function visitComplexType(PHPClass $class, ComplexType $type): void
     {
         $schema = $type->getSchema();
-        foreach ($this->filterElements($type) as $element) {
+        foreach ($type->getElements() as $element) {
             if ($element instanceof Sequence) {
                 $this->visitSequence($class, $schema, $element);
             } elseif ($element instanceof Choice) {

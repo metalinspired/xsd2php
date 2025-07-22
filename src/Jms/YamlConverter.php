@@ -309,9 +309,6 @@ class YamlConverter extends AbstractConverter
             $data['properties'] = [];
         }
         foreach ($this->flattElements($type) as $element) {
-            if ($element instanceof Any) {
-                continue;
-            }
             $data['properties'][$this->getNamingStrategy()->getPropertyName($element)] = $this->visitElement($class, $schema, $element);
         }
     }
