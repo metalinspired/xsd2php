@@ -206,8 +206,10 @@ class ClassGenerator
 
         if (
             ($parameter->getDefaultValue() instanceof ValueGenerator) &&
-            $parameter->getDefaultValue()->getValue() === null && $parameter->getType() !== null &&
-            substr($parameter->getType(), 0, 1) !== '?'
+            $parameter->getDefaultValue()->getValue() === null &&
+            $parameter->getType() !== null &&
+            substr($parameter->getType(), 0, 1) !== '?' &&
+            $parameter->getType() !== 'mixed'
         ) {
             $parameter->setType('?' . $parameter->getType());
         }

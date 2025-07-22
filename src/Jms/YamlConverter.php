@@ -7,6 +7,7 @@ use Exception;
 use GoetasWebservices\XML\XSDReader\Schema\Attribute\AttributeContainer;
 use GoetasWebservices\XML\XSDReader\Schema\Attribute\AttributeItem;
 use GoetasWebservices\XML\XSDReader\Schema\Attribute\AttributeSingle;
+use GoetasWebservices\XML\XSDReader\Schema\Element\Any\Any;
 use GoetasWebservices\XML\XSDReader\Schema\Element\Element;
 use GoetasWebservices\XML\XSDReader\Schema\Element\ElementContainer;
 use GoetasWebservices\XML\XSDReader\Schema\Element\ElementDef;
@@ -308,8 +309,10 @@ class YamlConverter extends AbstractConverter
             $data['properties'] = [];
         }
         foreach ($this->flattElements($type) as $element) {
-            $propName = $this->getNamingStrategy()->getPropertyName($element);
-            $data['properties'][$propName] = $this->visitElement($class, $schema, $element);
+            if ($element instanceof Any) {
+                continue;
+            }
+            $data['properties'][$this->getNamingStrategy()->getPropertyName($element)] = $this->visitElement($class, $schema, $element);
         }
     }
 
