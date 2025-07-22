@@ -528,34 +528,7 @@ class YamlConverter extends AbstractConverter
         $t = $element->getType();
 
         if ($arrayize) {
-            if ($itemOfArray = $this->isArrayNestedElement($t)) {
-                if (!$t->getName()) {
-                    if ($element instanceof ElementRef) {
-                        $elRefClass = $this->visitElementDef($element->getSchema(), $element->getReferencedElement());
-                        $itemClass = $this->findPHPClass($elRefClass, $element);
-                    } else {
-                        $itemClass = key($class);
-                    }
-
-                    $classType = $this->visitTypeAnonymous($t, $element->getName(), $itemClass);
-                } else {
-                    $classType = $this->visitType($t);
-                }
-
-                $visited = $this->visitElement($classType, $schema, $itemOfArray, false);
-
-                $property['type'] = 'array<' . $visited['type'] . '>';
-                $property['xml_list']['inline'] = false;
-                $property['xml_list']['entry_name'] = $itemOfArray->getName();
-                $property['xml_list']['skip_when_empty'] = ($element->getMin() === 0);
-
-                $elementNamespace = $this->getElementNamespace($schema, $itemOfArray);
-                if ($elementNamespace) {
-                    $property['xml_list']['namespace'] = $elementNamespace;
-                }
-
-                return $property;
-            } elseif ($itemOfArray = $this->isArrayType($t)) {
+            if ($itemOfArray = $this->isArrayType($t)) {
                 if (!$t->getName()) {
                     if ($element instanceof ElementRef) {
                         $elRefClass = $this->visitElementDef($element->getSchema(), $element->getReferencedElement());
@@ -581,7 +554,9 @@ class YamlConverter extends AbstractConverter
                 }
 
                 return $property;
-            } elseif ($this->isArrayElement($element)) {
+            }
+
+            if ($this->isArrayElement($element)) {
                 $property['xml_list']['inline'] = true;
                 $property['xml_list']['entry_name'] = $element->getName();
 

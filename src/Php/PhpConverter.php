@@ -501,25 +501,6 @@ class PhpConverter extends AbstractConverter
                 return $property;
             }
 
-            if ($itemOfArray = $this->isArrayNestedElement($t)) {
-                if (!$t->getName()) {
-                    if ($element instanceof ElementRef) {
-                        $refClass = $this->visitElementDef($element->getReferencedElement());
-                        $itemClass = $this->findPHPClass($refClass, $element);
-                    } else {
-                        $itemClass = $class;
-                    }
-
-                    $classType = $this->visitTypeAnonymous($t, $element->getName(), $itemClass);
-                } else {
-                    $classType = $this->visitType($t, true);
-                }
-                $elementProp = $this->visitElement($classType, $schema, $itemOfArray, false);
-                $property->setType(new PHPClassOf($elementProp));
-
-                return $property;
-            }
-
             if ($this->isArrayElement($element)) {
                 $arg = new PHPArg($this->getNamingStrategy()->getPropertyName($element));
 
