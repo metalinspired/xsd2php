@@ -6,6 +6,9 @@
     {
       "name": "Asmir Mustafic",
       "email": "goetas@gmail.com"
+    },
+    {
+      "name": "Milan Divkovic"
     }
   ],
   "keywords": [
@@ -31,7 +34,7 @@
   "require-dev": {
     "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0",
     "jms/serializer": "^1.9|^2.0|^3.0",
-    "goetas-webservices/xsd2php-runtime": "^0.2.13@dev",
+    "goetas-webservices/xsd2php-runtime": "^0.2.17",
     "symfony/validator": "^6.0|^7.0",
     "dms/phpunit-arraysubset-asserts": "^0.3.1"
   },
